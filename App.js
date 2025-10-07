@@ -5,12 +5,16 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import DashboardNavigator from "./screens/Dashboard/DashboardNavigator";
 
 import { useFonts } from "expo-font";
 
+// all screens
 import LoadingScreen from "./screens/LoadingScreen";
 import LoginScreen from "./screens/LoginScreen";
-import HomeScreen from "./screens/Dashboard/HomeScreen";
+import ProfileScreen from "./screens/SubScreens/ProfileScreen";
+import SupportScreen from "./screens/SubScreens/SupportScreen";
+import NotificationsScreen from "./screens/SubScreens/NotificationsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,7 +43,10 @@ export default function App() {
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Dashboard" component={HomeScreen} />
+          <Stack.Screen name="Dashboard" component={DashboardNavigator} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="Support" component={SupportScreen} />
+          <Stack.Screen name="Notifications" component={NotificationsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
