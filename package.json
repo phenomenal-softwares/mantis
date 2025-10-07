@@ -31,7 +31,8 @@
     "react-native-screens": "~4.16.0",
     "react-native-svg": "15.12.1",
     "react-native-web": "^0.21.0",
-    "tailwind-rn": "^4.2.0"
+    "tailwind-rn": "^4.2.0",
+    "expo-dev-client": "~6.0.13"
   },
   "private": true,
   "devDependencies": {

@@ -16,7 +16,7 @@ const ServicesSection = ({ title, data, onPress }) => {
       activeOpacity={0.8}
     >
       <View style={styles.iconContainer}>
-        <Feather name={item.icon} size={22} color={colors.accent} />
+        <Feather name={item.icon} size={25} color={colors.secondary} />
       </View>
       <Text style={styles.label}>{item.name}</Text>
     </TouchableOpacity>

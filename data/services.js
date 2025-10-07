@@ -7,7 +7,7 @@ export const services = {
   ],
 
   Wealth: [
-    { id: "5", name: "Savings", icon: "piggy-bank", screen: "SavingsScreen" },
+    { id: "5", name: "Savings", icon: "dollar-sign", screen: "SavingsScreen" },
     { id: "6", name: "Investments", icon: "trending-up", screen: "InvestmentsScreen" },
     { id: "7", name: "Loans", icon: "credit-card", screen: "LoansScreen" },
   ],

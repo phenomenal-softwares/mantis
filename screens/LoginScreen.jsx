@@ -13,6 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import colors from "../styles/colors";
+import { user } from "../data/user";
 
 export default function LoginScreen() {
   const [pin, setPin] = useState("");
@@ -64,7 +65,7 @@ export default function LoginScreen() {
               </View>
               {/* Welcome */}
               <Text style={styles.welcome}>
-                Welcome back, <Text style={styles.accent}>AJAYI RUTH</Text>
+                Welcome back, <Text style={styles.accent}>{user.fullName}</Text>
               </Text>
             </View>
 
@@ -193,6 +194,7 @@ const styles = StyleSheet.create({
   accent: {
     color: colors.accent,
     fontWeight: "700",
+    textTransform: "uppercase",
   },
   pinWrapper: {
     flexDirection: "row",

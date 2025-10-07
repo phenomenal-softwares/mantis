@@ -1,7 +1,8 @@
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, Image, ScrollView, StyleSheet } from "react-native";
 import HomeHeader from "../../components/HomeScreen/HomeHeader";
 import AccountInfo from "../../components/HomeScreen/AccountInfo";
 import ServicesSection from "../../components/HomeScreen/ServicesSection";
+import PromoCarousel from "../../components/HomeScreen/PromoCarousel";
 
 import { services } from "../../data/services";
 
@@ -25,6 +26,7 @@ const HomeScreen = () => {
           data={services.Transfer}
           onPress={handleServicePress}
         />
+        <PromoCarousel />
         <ServicesSection
           title="Bill Payments"
           data={services.BillPayments}
@@ -35,6 +37,7 @@ const HomeScreen = () => {
           data={services.Wealth}
           onPress={handleServicePress}
         />
+        <PromoCarousel />
         <ServicesSection
           title="Rewards"
           data={services.Rewards}
@@ -46,6 +49,7 @@ const HomeScreen = () => {
           onPress={handleServicePress}
         />
       </View>
+      <Image style={styles.promoImage} source={require("../../assets/promo/promo4.jpg")} />
     </ScrollView>
   );
 };
@@ -60,5 +64,11 @@ const styles = StyleSheet.create({
   sections: {
     paddingTop: 10,
     paddingBottom: 30,
+  },
+  promoImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 10,
+    marginTop: 10,
   },
 });
