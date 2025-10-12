@@ -1,163 +1,143 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  StyleSheet,
-  Dimensions,
-  Animated,
-} from "react-native";
-import colors from "../../styles/colors";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { View, Text, Image, StyleSheet, Animated, PanResponder } from "react-native";
 import { promoData } from "../../data/promos";
+import colors from "../../styles/colors";
 
-const { width } = Dimensions.get("window");
+export default function PromoCarousel() {
+  // Randomize promo order once per mount
+  const shuffledPromos = useMemo(
+    () => [...promoData].sort(() => 0.5 - Math.random()),
+    []
+  );
 
-const PromoCarousel = () => {
-  const [ads, setAds] = useState([]);
-  const [listReady, setListReady] = useState(false);
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const flatListRef = useRef(null);
-  const currentIndex = useRef(0);
-  const intervalRef = useRef(null);
+  const [index, setIndex] = useState(0);
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const slideInterval = useRef(null);
 
-  // Shuffle once when mounted
+  // Swipe gesture setup
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dx) > 20,
+      onPanResponderRelease: (_, gesture) => {
+        if (gesture.dx > 50) {
+          handlePrev();
+        } else if (gesture.dx < -50) {
+          handleNext();
+        }
+      },
+    })
+  ).current;
+
+  const handleNext = () => {
+    setIndex((prev) => (prev + 1) % shuffledPromos.length);
+  };
+
+  const handlePrev = () => {
+    setIndex((prev) =>
+      prev === 0 ? shuffledPromos.length - 1 : prev - 1
+    );
+  };
+
+  // Auto-slide
   useEffect(() => {
-    const shuffled = [...promoData].sort(() => Math.random() - 0.5);
-    setAds(shuffled);
+    slideInterval.current = setInterval(() => {
+      handleNext();
+    }, 4000);
+    return () => clearInterval(slideInterval.current);
   }, []);
 
-  // Auto slide logic (runs only after FlatList is ready)
+  // Fade transition
   useEffect(() => {
-    if (!listReady || ads.length === 0) return;
+    fadeAnim.setValue(0);
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 600,
+      useNativeDriver: true,
+    }).start();
+  }, [index]);
 
-    startAutoSlide();
-
-    return () => stopAutoSlide();
-  }, [listReady, ads]);
-
-  // Helper: start and stop functions
-  const startAutoSlide = () => {
-    stopAutoSlide(); // clear any existing interval
-    intervalRef.current = setInterval(() => {
-      if (flatListRef.current && ads.length > 0) {
-        currentIndex.current = (currentIndex.current + 1) % ads.length;
-        flatListRef.current.scrollToIndex({
-          index: currentIndex.current,
-          animated: true,
-        });
-      }
-    }, 3000);
-  };
-
-  const stopAutoSlide = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  };
-
-  // Detect manual swipe to pause/resume auto slide
-  const handleScrollBegin = () => stopAutoSlide();
-  const handleScrollEnd = () => startAutoSlide();
-
-  const renderItem = ({ item }) => (
-    <View style={[styles.card, { backgroundColor: item.bgColor }]}>
-      <View style={{ flex: 1 }}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.desc}>{item.description}</Text>
-      </View>
-      <Image source={item.image} style={styles.image} />
-    </View>
-  );
+  const promo = shuffledPromos[index];
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        ref={flatListRef}
-        data={ads}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onLayout={() => setListReady(true)}
-        onScrollBeginDrag={handleScrollBegin}
-        onMomentumScrollEnd={handleScrollEnd}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: false }
-        )}
-        onScrollToIndexFailed={(error) => {
-          console.warn("Scroll error:", error);
-        }}
-      />
+    <View style={styles.container} {...panResponder.panHandlers}>
+      <Animated.View
+        style={[
+          styles.card,
+          { backgroundColor: promo.bgColor, opacity: fadeAnim },
+        ]}
+      >
+        <Image source={promo.image} style={styles.image} />
+        <View style={styles.textWrap}>
+          <Text style={styles.title}>{promo.title}</Text>
+          <Text style={styles.description}>{promo.description}</Text>
+        </View>
+      </Animated.View>
 
-      {/* Pagination dots */}
-      <View style={styles.dotsContainer}>
-        {ads.map((_, i) => {
-          const opacity = scrollX.interpolate({
-            inputRange: [
-              (i - 1) * width,
-              i * width,
-              (i + 1) * width,
-            ],
-            outputRange: [0.3, 1, 0.3],
-            extrapolate: "clamp",
-          });
-          return (
-            <Animated.View
-              key={i.toString()}
-              style={[styles.dot, { opacity }]}
-            />
-          );
-        })}
+      {/* Dots */}
+      <View style={styles.dots}>
+        {shuffledPromos.map((_, i) => (
+          <View
+            key={i}
+            style={[styles.dot, i === index && styles.activeDot]}
+          />
+        ))}
       </View>
     </View>
   );
-};
-
-export default PromoCarousel;
+}
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 10,
+    width: "100%",
+    height: 150,
+    borderRadius: 16,
+    overflow: "hidden",
+    position: "relative",
+    marginVertical: 18,
   },
   card: {
-    width: width - 40,
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 16,
-    padding: 16,
-    marginHorizontal: 10,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: colors.primary,
-    marginBottom: 4,
-  },
-  desc: {
-    fontSize: 13,
-    color: "#444",
-    flexWrap: "wrap",
-    maxWidth: "85%",
+    paddingHorizontal: 14,
+    gap: 12,
   },
   image: {
     width: 80,
     height: 80,
-    resizeMode: "contain",
+    borderRadius: 12,
+    resizeMode: "cover",
   },
-  dotsContainer: {
+  textWrap: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 17,
+    fontWeight: "700",
+    color: colors.primary,
+    marginBottom: 3,
+  },
+  description: {
+    fontSize: 14,
+    color: "#444",
+    lineHeight: 19,
+  },
+  dots: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
+    right: 0,
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 8,
+    gap: 6,
   },
   dot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: colors.primary,
-    marginHorizontal: 4,
+    backgroundColor: colors.secondary,
+  },
+  activeDot: {
+    backgroundColor: "#fff",
   },
 });

@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { user } from "../../data/user";
+import { BalanceContext } from "../../contexts/BalanceContext";
 import colors from "../../styles/colors";
 
 export default function AccountInfo({ onViewTransactions }) {
+  const { balance } = useContext(BalanceContext);
   const [showBalance, setShowBalance] = useState(true);
 
   return (
@@ -24,7 +26,7 @@ export default function AccountInfo({ onViewTransactions }) {
       {/* Balance */}
       <Text style={styles.balance}>
         {showBalance
-          ? `${user.account.currency}${user.account.balance.toLocaleString()}`
+          ? `${user.account.currency}${balance.toLocaleString()}`
           : "•••••••"}
       </Text>
 

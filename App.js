@@ -9,6 +9,9 @@ import DashboardNavigator from "./screens/Dashboard/DashboardNavigator";
 
 import { useFonts } from "expo-font";
 
+// contexts
+import { BalanceProvider } from "./contexts/BalanceContext";
+
 // all screens
 import LoadingScreen from "./screens/LoadingScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -37,18 +40,23 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Login"
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Dashboard" component={DashboardNavigator} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-          <Stack.Screen name="Support" component={SupportScreen} />
-          <Stack.Screen name="Notifications" component={NotificationsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <BalanceProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Login"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Dashboard" component={DashboardNavigator} />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="Support" component={SupportScreen} />
+            <Stack.Screen
+              name="Notifications"
+              component={NotificationsScreen}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </BalanceProvider>
     </SafeAreaProvider>
   );
 }

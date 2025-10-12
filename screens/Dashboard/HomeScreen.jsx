@@ -11,46 +11,56 @@ import { useNavigation } from "@react-navigation/native";
 const HomeScreen = () => {
   const navigation = useNavigation();
   const handleServicePress = (item) => {
-    if (item.screen) navigation.navigate(item.screen);
+    if (item.screen) {
+      navigation.navigate(
+        item.screen,
+        item.type ? { type: item.type } : undefined
+      );
+    }
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <>
       <HomeHeader />
-      <AccountInfo />
+      <ScrollView style={styles.container}>
+        <AccountInfo />
 
-      {/* Add more dashboard content below */}
-      <View style={styles.sections}>
-        <ServicesSection
-          title="Transfers"
-          data={services.Transfer}
-          onPress={handleServicePress}
+        {/* Add more dashboard content below */}
+        <View style={styles.sections}>
+          <ServicesSection
+            title="Transfers"
+            data={services.Transfer}
+            onPress={handleServicePress}
+          />
+          <PromoCarousel />
+          <ServicesSection
+            title="Bill Payments"
+            data={services.BillPayments}
+            onPress={handleServicePress}
+          />
+          <ServicesSection
+            title="Wealth"
+            data={services.Wealth}
+            onPress={handleServicePress}
+          />
+          <PromoCarousel />
+          <ServicesSection
+            title="Rewards"
+            data={services.Rewards}
+            onPress={handleServicePress}
+          />
+          <ServicesSection
+            title="Other Services"
+            data={services.Other}
+            onPress={handleServicePress}
+          />
+        </View>
+        <Image
+          style={styles.promoImage}
+          source={require("../../assets/promo/promo4.jpg")}
         />
-        <PromoCarousel />
-        <ServicesSection
-          title="Bill Payments"
-          data={services.BillPayments}
-          onPress={handleServicePress}
-        />
-        <ServicesSection
-          title="Wealth"
-          data={services.Wealth}
-          onPress={handleServicePress}
-        />
-        <PromoCarousel />
-        <ServicesSection
-          title="Rewards"
-          data={services.Rewards}
-          onPress={handleServicePress}
-        />
-        <ServicesSection
-          title="Other Services"
-          data={services.Other}
-          onPress={handleServicePress}
-        />
-      </View>
-      <Image style={styles.promoImage} source={require("../../assets/promo/promo4.jpg")} />
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 

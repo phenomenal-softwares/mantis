@@ -1,7 +1,7 @@
 export const services = {
   Recommended: [
-    { id: "1", name: "Mantis Transfer", icon: "send", screen: "MantisTransferScreen" },
-    { id: "2", name: "Other Banks Transfer", icon: "repeat", screen: "OtherBanksTransferScreen" },
+    { id: "1", name: "Mantis Transfer", icon: "send", screen: "Transfer", type: "mantis" },
+    { id: "2", name: "Other Banks Transfer", icon: "repeat", screen: "Transfer", type: "bank" },
     { id: "3", name: "Airtime", icon: "phone-call", screen: "AirtimeScreen" },
     { id: "4", name: "Data", icon: "wifi", screen: "DataScreen" },
   ],
@@ -20,9 +20,9 @@ export const services = {
   ],
 
   Transfer: [
-    { id: "12", name: "Mantis Transfer", icon: "send", screen: "MantisTransferScreen" },
-    { id: "13", name: "Other Banks Transfer", icon: "repeat", screen: "OtherBanksTransferScreen" },
-    { id: "14", name: "International Transfer", icon: "globe", screen: "InternationalTransferScreen" },
+    { id: "12", name: "Mantis Transfer", icon: "send", screen: "Transfer", type: "mantis" },
+    { id: "13", name: "Other Banks Transfer", icon: "repeat", screen: "Transfer", type: "bank" },
+    { id: "14", name: "International Transfer", icon: "globe", screen: "ComingSoon" },
   ],
 
   Rewards: [

@@ -1,9 +1,9 @@
-import React, { createContext, useState } from "react";
+import { createContext, useState } from "react";
 
 export const BalanceContext = createContext();
 
 export const BalanceProvider = ({ children }) => {
-  const [balance, setBalance] = useState(50000); // dummy ₦50k
+  const [balance, setBalance] = useState(245000.75);
 
   return (
     <BalanceContext.Provider value={{ balance, setBalance }}>
