@@ -10,6 +10,7 @@ import {
   Platform,
 } from "react-native";
 import { BalanceContext } from "../../contexts/BalanceContext";
+import { TransactionHistoryContext } from "../../contexts/TransactionHistoryContext";
 import TransactionSuccessModal from "../../components/modals/TransactionSuccessModal";
 import colors from "../../styles/colors";
 import { Feather, Ionicons } from "@expo/vector-icons";
@@ -29,6 +30,7 @@ const banks = [
 const TransferScreen = ({ route, navigation }) => {
   const { type } = route.params || { type: "mantis" }; // 'mantis' | 'bank'
   const { balance, setBalance } = useContext(BalanceContext);
+  const { addTransaction } = useContext(TransactionHistoryContext);
   const [bank, setBank] = useState("");
   const [showBanks, setShowBanks] = useState(false);
   const [accountNumber, setAccountNumber] = useState("");
@@ -70,6 +72,19 @@ const TransferScreen = ({ route, navigation }) => {
 
     // Deduct the amount
     setBalance((prev) => prev - numericAmount);
+
+    // Log the transaction
+    addTransaction({
+      type: "Debit",
+      mode: "Transfer",
+      amount: numericAmount,
+      description:
+        type === "mantis"
+          ? "Mantis-to-Mantis Transfer"
+          : `Transfer to ${bank}`,
+      recipient: recipient || accountNumber,
+      status: "Successful",
+    });
 
     // Show success modal
     setShowSuccessModal(true);
@@ -274,7 +289,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 16,
-    color: colors.primary,
+    fontWeight: "600",
+    color: colors.secondary600,
   },
   validationText: {
     marginTop: 5,
@@ -307,7 +323,7 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     fontSize: 15,
-    color: colors.secondary,
+    color: colors.dark,
     fontWeight: "500",
     textTransform: "uppercase",
   },
@@ -337,7 +353,7 @@ const styles = StyleSheet.create({
   },
   bankText: {
     fontSize: 15,
-    color: colors.secondary,
+    color: colors.secondary300,
     fontWeight: "500",
     textTransform: "uppercase",
   },
@@ -356,7 +372,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ccc",
   },
   transferText: {
-    color: "#fff",
+    color: colors.light,
     fontSize: 16,
     fontWeight: "700",
   },

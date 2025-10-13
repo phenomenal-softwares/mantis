@@ -11,6 +11,7 @@ import { useFonts } from "expo-font";
 
 // contexts
 import { BalanceProvider } from "./contexts/BalanceContext";
+import { TransactionHistoryProvider } from "./contexts/TransactionHistoryContext";
 
 // all screens
 import LoadingScreen from "./screens/LoadingScreen";
@@ -41,6 +42,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <BalanceProvider>
+        <TransactionHistoryProvider>
         <NavigationContainer>
           <Stack.Navigator
             initialRouteName="Login"
@@ -56,6 +58,7 @@ export default function App() {
             />
           </Stack.Navigator>
         </NavigationContainer>
+        </TransactionHistoryProvider>
       </BalanceProvider>
     </SafeAreaProvider>
   );

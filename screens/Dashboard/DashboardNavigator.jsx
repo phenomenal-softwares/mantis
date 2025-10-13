@@ -16,6 +16,7 @@ import SupportScreen from "../SubScreens/SupportScreen";
 import NotificationsScreen from "../SubScreens/NotificationsScreen";
 import TransferScreen from "../Services/TransferScreen";
 import ComingSoonScreen from "../SubScreens/ComingSoonScreen";
+import TransactionHistoryScreen from "../SubScreens/TransactionHistoryScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -88,6 +89,7 @@ export default function DashboardNavigator() {
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
       <Stack.Screen name="Transfer" component={TransferScreen} />
       <Stack.Screen name="ComingSoon" component={ComingSoonScreen} />
+      <Stack.Screen name="TransactionHistory" component={TransactionHistoryScreen} />
     </Stack.Navigator>
   );
 }

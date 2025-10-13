@@ -2,12 +2,18 @@ import { useState, useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { user } from "../../data/user";
+import { useNavigation } from "@react-navigation/native";
 import { BalanceContext } from "../../contexts/BalanceContext";
 import colors from "../../styles/colors";
 
 export default function AccountInfo({ onViewTransactions }) {
   const { balance } = useContext(BalanceContext);
   const [showBalance, setShowBalance] = useState(true);
+  const navigation = useNavigation();
+
+  const handleViewTransactions = () => {
+    navigation.navigate("TransactionHistory");
+  };
 
   return (
     <View style={styles.container}>
@@ -49,7 +55,7 @@ export default function AccountInfo({ onViewTransactions }) {
       {/* Transactions Button */}
       <TouchableOpacity
         style={styles.button}
-        onPress={onViewTransactions}
+        onPress={handleViewTransactions}
         activeOpacity={0.8}
       >
         <Ionicons name="swap-horizontal-outline" size={18} color="#fff" />
