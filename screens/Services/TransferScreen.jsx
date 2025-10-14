@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { BalanceContext } from "../../contexts/BalanceContext";
 import { TransactionHistoryContext } from "../../contexts/TransactionHistoryContext";
+import { NotificationContext } from "../../contexts/NotificationContext";
 import TransactionSuccessModal from "../../components/modals/TransactionSuccessModal";
 import colors from "../../styles/colors";
 import { Feather, Ionicons } from "@expo/vector-icons";
@@ -31,6 +32,7 @@ const TransferScreen = ({ route, navigation }) => {
   const { type } = route.params || { type: "mantis" }; // 'mantis' | 'bank'
   const { balance, setBalance } = useContext(BalanceContext);
   const { addTransaction } = useContext(TransactionHistoryContext);
+  const { addNotification } = useContext(NotificationContext);
   const [bank, setBank] = useState("");
   const [showBanks, setShowBanks] = useState(false);
   const [accountNumber, setAccountNumber] = useState("");
@@ -85,6 +87,13 @@ const TransferScreen = ({ route, navigation }) => {
       recipient: recipient || accountNumber,
       status: "Successful",
     });
+
+    // Add notification
+  addNotification({
+    title: "Transfer Successful",
+    message: `₦${numericAmount} sent to ${recipient}.`,
+    type: "success",
+  });
 
     // Show success modal
     setShowSuccessModal(true);

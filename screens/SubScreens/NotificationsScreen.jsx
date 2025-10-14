@@ -1,53 +1,77 @@
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
-import { user } from "../../data/user";
-import { Feather, Ionicons } from "@expo/vector-icons";
-import colors from "../../styles/colors";
+import { useContext } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { NotificationContext } from "../../contexts/NotificationContext";
 import { useNavigation } from "@react-navigation/native";
 
 const NotificationsScreen = () => {
+  const { notifications, markAsRead } = useContext(NotificationContext);
   const navigation = useNavigation();
 
-  const renderItem = ({ item }) => (
-    <View style={[styles.notification, !item.read && styles.unread]}>
-      <Feather
-        name={item.read ? "bell" : "bell-off"}
-        size={20}
-        color={item.read ? "#888" : "#028174"}
-      />
-      <View style={styles.textBox}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.message}>{item.message}</Text>
-        <Text style={styles.date}>{item.date}</Text>
-      </View>
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    const icon =
+      item.type === "success"
+        ? "checkmark-circle"
+        : item.type === "promo"
+        ? "gift-outline"
+        : item.type === "warning"
+        ? "alert-circle-outline"
+        : "information-circle-outline";
+
+    return (
+      <TouchableOpacity
+        style={[
+          styles.card,
+          { backgroundColor: item.read ? "#f4f4f4" : "#fff" },
+        ]}
+        onPress={() => markAsRead(item.id)}
+        activeOpacity={0.8}
+      >
+        <View style={styles.iconWrapper}>
+          <Ionicons name={icon} size={26} color="#028174" />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.message}>{item.message}</Text>
+          <Text style={styles.date}>
+            {new Date(item.date).toLocaleString()}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      {/* Custom Header */}
+      {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backBtn}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons
-            name="arrow-back"
-            size={26}
-            color={colors?.text || "#333"}
-          />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <MaterialIcons name="arrow-back" size={26} color="#028174" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Notifications</Text>
-        <View style={{ width: 26 }} /> {/* Spacer for symmetry */}
+        <View style={{ width: 26 }} />
       </View>
 
-      
+      {notifications.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Ionicons name="notifications-off-outline" size={60} color="#aaa" />
+          <Text style={styles.emptyText}>No notifications yet</Text>
+        </View>
+      ) : (
         <FlatList
-          data={user.notifications}
-          keyExtractor={(item) => item.id}
+          data={notifications}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
-          contentContainerStyle={{ padding: 20 }}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
         />
-      
+      )}
     </View>
   );
 };
@@ -57,56 +81,64 @@ export default NotificationsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f8f9fb",
+    paddingHorizontal: 16,
+    paddingTop: 10,
   },
-  /* HEADER */
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    backgroundColor: "#f9f9f9",
-  },
-  backBtn: {
-    padding: 4,
+    marginBottom: 20,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "600",
-    color: colors?.primary || "#028174",
+    color: "#028174",
   },
-
-  /* NOTIFICATION ITEM */
-  notification: {
+  card: {
     flexDirection: "row",
-    alignItems: "flex-start",
-    padding: 15,
-    backgroundColor: "#f8f8f8",
-    borderRadius: 10,
-    marginBottom: 10,
+    backgroundColor: "#fff",
+    padding: 14,
+    borderRadius: 12,
+    marginBottom: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 1,
   },
-  unread: {
-    backgroundColor: "#e0f4f1",
-  },
-  textBox: {
-    marginLeft: 10,
-    flex: 1,
+  iconWrapper: {
+    backgroundColor: "#e5f8f6",
+    padding: 10,
+    borderRadius: 30,
+    marginRight: 12,
   },
   title: {
-    fontSize: 16,
     fontWeight: "600",
+    fontSize: 15,
     color: "#0a6b8b",
   },
   message: {
-    fontSize: 14,
-    color: "#555",
-    marginVertical: 3,
+    fontSize: 13,
+    color: "#444",
   },
   date: {
     fontSize: 12,
-    color: "#999",
+    color: "#777",
+    marginTop: 4,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyText: {
+    marginTop: 8,
+    fontSize: 14,
+    color: "#777",
+  },
+  listContent: {
+    paddingBottom: 40,
   },
 });
