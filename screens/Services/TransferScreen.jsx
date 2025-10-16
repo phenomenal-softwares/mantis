@@ -28,6 +28,19 @@ const banks = [
   "Moniepoint",
 ];
 
+const recipients = [
+  "BOLA AHMED TINUBU",
+  "ALIKO DANGOTE",
+  "FEMI OTEDOLA",
+  "MIKE ADENUGA",
+  "CRISTIANO RONALDO",
+  "LIONEL MESSI",
+  "DAVIDO ADELEKE",
+  "DONALD TRUMP",
+  "TOPE ALABI",
+  "JACKIE CHAN",
+];
+
 const TransferScreen = ({ route, navigation }) => {
   const { type } = route.params || { type: "mantis" }; // 'mantis' | 'bank'
   const { balance, setBalance } = useContext(BalanceContext);
@@ -37,6 +50,7 @@ const TransferScreen = ({ route, navigation }) => {
   const [showBanks, setShowBanks] = useState(false);
   const [accountNumber, setAccountNumber] = useState("");
   const [validationMsg, setValidationMsg] = useState("");
+  const [verifying, setVerifying] = useState(false);
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
@@ -44,19 +58,32 @@ const TransferScreen = ({ route, navigation }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    let timer;
+
     if (accountNumber.length === 0) {
       setValidationMsg("");
       setRecipient("");
+      setVerifying(false);
     } else if (accountNumber.length < 10) {
       setValidationMsg("Account number must be 10 digits");
       setRecipient("");
+      setVerifying(false);
     } else if (accountNumber.length > 10) {
       setValidationMsg("Account number cannot exceed 10 digits");
       setRecipient("");
+      setVerifying(false);
     } else if (accountNumber.length === 10) {
       // Simulate recipient verification
       setValidationMsg("");
-      setRecipient("BOLA AHMED TINUBU");
+      setVerifying(true);
+      setRecipient("");
+      timer = setTimeout(() => {
+        const randomRecipient =
+          recipients[Math.floor(Math.random() * recipients.length)];
+
+        setRecipient(randomRecipient);
+        setVerifying(false);
+      }, 1500);
     }
   }, [accountNumber]);
 
@@ -189,6 +216,8 @@ const TransferScreen = ({ route, navigation }) => {
           {/* Validator feedback */}
           {validationMsg ? (
             <Text style={styles.validationText}>{validationMsg}</Text>
+          ) : verifying ? (
+            <Text style={styles.verifyingText}>Verifying account...</Text>
           ) : recipient ? (
             <Text style={styles.recipientText}>Recipient: {recipient}</Text>
           ) : null}
@@ -304,6 +333,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: colors.error,
     fontSize: 13,
+    textAlign: "right",
+  },
+  verifyingText: {
+    marginTop: 5,
+    color: colors.accent,
+    fontSize: 14,
+    fontWeight: "500",
     textAlign: "right",
   },
   recipientText: {

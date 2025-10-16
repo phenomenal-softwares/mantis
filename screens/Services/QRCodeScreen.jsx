@@ -11,7 +11,9 @@ import QRCode from "react-native-qrcode-svg";
 import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import { user } from "../../data/user";
 import { useNavigation } from "@react-navigation/native";
+import { showToast } from "../../hooks/useToast";
 
+import { BalanceContext } from "../../contexts/BalanceContext";
 import { TransactionHistoryContext } from "../../contexts/TransactionHistoryContext";
 import { NotificationContext } from "../../contexts/NotificationContext";
 
@@ -19,26 +21,26 @@ import { recipients } from "../../data/recipients";
 
 const QRCodeScreen = () => {
   const navigation = useNavigation();
+  const { balance, setBalance } = useContext(BalanceContext);
   const { addTransaction } = useContext(TransactionHistoryContext);
   const { addNotification } = useContext(NotificationContext);
   const [showScanner, setShowScanner] = useState(false);
   const [scanComplete, setScanComplete] = useState(false);
   const scanAnim = useRef(new Animated.Value(0)).current;
   const [recipient, setRecipient] = useState(null);
-
-  // pick random recipient + amount
-  const pickRandomRecipient = () => {
-    const random = recipients[Math.floor(Math.random() * recipients.length)];
-    const amount = Number(
-      Math.floor((Math.random() * (50000 - 1000 + 1) + 1000) / 10) * 10
-    ); // 1k - 50k, round to nearest 10
-    setRecipient({ ...random, amount });
-  };
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (showScanner && !scanComplete) {
-      pickRandomRecipient();
-      // Animate the scan line up and down repeatedly
+      const randomRecipient =
+        recipients[Math.floor(Math.random() * recipients.length)];
+      const amount =
+        Math.floor((Math.random() * (50000 - 1000 + 1) + 1000) / 10) * 10; // ₦1k–₦50k, rounded to 10
+      const newRecipient = { ...randomRecipient, amount };
+
+      setRecipient(newRecipient);
+
+      // Animate scan line
       Animated.loop(
         Animated.sequence([
           Animated.timing(scanAnim, {
@@ -54,24 +56,32 @@ const QRCodeScreen = () => {
         ])
       ).start();
 
-      // Fake scanning result
+      // Delay to simulate scanning result
       const timer = setTimeout(() => {
-        // Log the transaction
+        if (!newRecipient) return;
+
+        const { name, bank, accountNumber, amount } = newRecipient;
+
+        if (amount > balance) {
+          setError("Insufficient balance.");
+          return;
+        }
+
+        // Deduct the amount
+        setBalance((prev) => prev - amount);
+
         addTransaction({
           type: "Debit",
           mode: "Transfer",
-          amount: recipient?.amount?.toLocaleString(),
-          description: `Transfer to ${recipient?.bank}`,
-          recipient: recipient?.name || recipient?.accountNumber,
+          amount: Number(amount),
+          description: `Transfer to ${bank}`,
+          recipient: name || accountNumber,
           status: "Successful",
         });
 
-        // Add notification
         addNotification({
           title: "Transfer Successful",
-          message: `₦${recipient?.amount?.toLocaleString()} sent to ${
-            recipient?.name
-          }.`,
+          message: `₦${amount.toLocaleString()} sent to ${name}.`,
           type: "success",
           read: false,
         });
@@ -127,6 +137,13 @@ const QRCodeScreen = () => {
       <View style={styles.buttons}>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: "#028174" }]}
+          onPress={() =>
+            showToast(
+              "success",
+              "QR Copied to Clipboard",
+              "You can now share your QR code."
+            )
+          }
         >
           <Feather name="share-2" size={20} color="#fff" />
           <Text style={styles.btnText}>Share My QR</Text>
@@ -144,7 +161,9 @@ const QRCodeScreen = () => {
       {/* Mock Scanner Modal */}
       <Modal visible={showScanner} animationType="fade" transparent>
         <View style={styles.modalOverlay}>
-          {!scanComplete ? (
+          {error ? (
+            <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>
+          ) : !scanComplete ? (
             <>
               <Text style={styles.scanHeader}>Align QR within frame</Text>
               <View style={styles.scanBox}>

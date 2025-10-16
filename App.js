@@ -7,7 +7,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DashboardNavigator from "./screens/Dashboard/DashboardNavigator";
 
+// font
 import { useFonts } from "expo-font";
+
+// toast
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
 // contexts
 import { BalanceProvider } from "./contexts/BalanceContext";
@@ -22,6 +26,24 @@ import SupportScreen from "./screens/SubScreens/SupportScreen";
 import NotificationsScreen from "./screens/SubScreens/NotificationsScreen";
 
 const Stack = createNativeStackNavigator();
+
+const toastConfig = {
+  success: (props) => (
+    <BaseToast
+      {...props}
+      style={{ borderLeftColor: "#028174", backgroundColor: "#E6F9F6" }}
+      text1Style={{ fontSize: 16, fontWeight: "700", color: "#028174" }}
+      text2Style={{ color: "#0a6b8b" }}
+    />
+  ),
+  error: (props) => (
+    <ErrorToast
+      {...props}
+      style={{ borderLeftColor: "#d9534f" }}
+      text1Style={{ fontSize: 16, fontWeight: "700" }}
+    />
+  ),
+};
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -45,22 +67,23 @@ export default function App() {
       <BalanceProvider>
         <TransactionHistoryProvider>
           <NotificationProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Login"
-            screenOptions={{ headerShown: false }}
-          >
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Dashboard" component={DashboardNavigator} />
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-            <Stack.Screen name="Support" component={SupportScreen} />
-            <Stack.Screen
-              name="Notifications"
-              component={NotificationsScreen}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-        </NotificationProvider>
+            <NavigationContainer>
+              <Stack.Navigator
+                initialRouteName="Login"
+                screenOptions={{ headerShown: false }}
+              >
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Dashboard" component={DashboardNavigator} />
+                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="Support" component={SupportScreen} />
+                <Stack.Screen
+                  name="Notifications"
+                  component={NotificationsScreen}
+                />
+              </Stack.Navigator>
+              <Toast config={toastConfig} />
+            </NavigationContainer>
+          </NotificationProvider>
         </TransactionHistoryProvider>
       </BalanceProvider>
     </SafeAreaProvider>
