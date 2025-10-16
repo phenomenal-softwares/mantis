@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -11,8 +11,16 @@ import { NotificationContext } from "../../contexts/NotificationContext";
 import { useNavigation } from "@react-navigation/native";
 
 const NotificationsScreen = () => {
-  const { notifications, markAsRead } = useContext(NotificationContext);
+  const { notifications, markAsRead, markAllAsRead } = useContext(NotificationContext);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    // Mark all as read once screen is focused
+    const unsubscribe = navigation.addListener("focus", () => {
+      markAllAsRead();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const renderItem = ({ item }) => {
     const icon =

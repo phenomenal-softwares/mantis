@@ -58,7 +58,7 @@ export default function AccountInfo({ onViewTransactions }) {
         onPress={handleViewTransactions}
         activeOpacity={0.8}
       >
-        <Ionicons name="swap-horizontal-outline" size={18} color="#fff" />
+        <Ionicons name="swap-horizontal-outline" size={18} color={colors.secondary} />
         <Text style={styles.btnText}>View Transactions</Text>
       </TouchableOpacity>
     </View>
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   btnText: {
-    color: "#fff",
+    color: colors.secondary,
     fontSize: 14,
     fontWeight: "600",
   },

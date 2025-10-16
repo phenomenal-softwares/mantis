@@ -10,7 +10,7 @@ export const NotificationProvider = ({ children }) => {
       message: "You’ve successfully created your Mantis account.",
       date: new Date(Date.now() - 86400000).toISOString(), // yesterday
       type: "info", // info | success | warning | error
-      read: false,
+      read: true,
     },
     {
       id: "NTF-" + Math.floor(Math.random() * 10000000),
@@ -21,6 +21,14 @@ export const NotificationProvider = ({ children }) => {
       read: false,
     },
   ]);
+
+  const [hasUnread, setHasUnread] = useState(false);
+
+  // 🔁 Auto-check if there are unread notifications
+  useEffect(() => {
+    const unread = notifications.some((n) => !n.read);
+    setHasUnread(unread);
+  }, [notifications]);
 
   const addNotification = (notification) => {
     setNotifications((prev) => [
@@ -42,9 +50,14 @@ export const NotificationProvider = ({ children }) => {
     );
   };
 
+  const markAllAsRead = () => {
+    setNotifications((prev) => prev.map((item) => ({ ...item, read: true })));
+    setHasUnread(false);
+  };
+
   return (
     <NotificationContext.Provider
-      value={{ notifications, addNotification, markAsRead }}
+      value={{ notifications, addNotification, markAsRead, markAllAsRead, hasUnread }}
     >
       {children}
     </NotificationContext.Provider>

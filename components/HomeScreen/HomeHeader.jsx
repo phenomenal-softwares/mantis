@@ -1,11 +1,14 @@
+import { useContext } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { NotificationContext } from "../../contexts/NotificationContext";
 import { user } from "../../data/user";
 
 const HomeHeader = () => {
   const navigation = useNavigation();
   const firstName = user.fullName.split(" ")[0];
+  const { hasUnread } = useContext(NotificationContext);
 
   return (
     <View style={styles.container}>
@@ -32,9 +35,24 @@ const HomeHeader = () => {
 
         <TouchableOpacity
           onPress={() => navigation.navigate("Notifications")}
-          style={styles.iconButton}
+          style={[styles.iconButton, { position: "relative" }]}
         >
           <Ionicons name="notifications-outline" size={24} color="#028174" />
+          {hasUnread && (
+            <View
+              style={{
+                position: "absolute",
+                top: 1,
+                right: 1,
+                width: 10,
+                height: 10,
+                borderRadius: 5,
+                backgroundColor: "#ff3b30",
+                borderWidth: 1.5,
+                borderColor: "#fff",
+              }}
+            />
+          )}
         </TouchableOpacity>
       </View>
     </View>

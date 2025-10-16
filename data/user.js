@@ -10,7 +10,7 @@ export const user = {
   account: {
     balance: 245000.75,
     currency: "₦",
-    accountNumber: "1234567890",
+    accountNumber: "0987654321",
     bankName: "Mantis Digital Wallet",
     tier: "Tier 3",
     lastUpdated: "2025-10-05T09:30:00Z",

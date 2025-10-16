@@ -22,7 +22,8 @@ export const services = {
   Transfer: [
     { id: "12", name: "Mantis Transfer", icon: "send", screen: "Transfer", type: "mantis" },
     { id: "13", name: "Other Banks Transfer", icon: "repeat", screen: "Transfer", type: "bank" },
-    { id: "14", name: "International Transfer", icon: "globe", screen: "ComingSoon" },
+    { id: "14", name: "QR Code", icon: "grid", screen: "QRCode" },
+    { id: "15", name: "International Transfer", icon: "globe", screen: "ComingSoon" },
   ],
 
   Rewards: [

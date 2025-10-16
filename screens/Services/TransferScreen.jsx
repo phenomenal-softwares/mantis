@@ -81,19 +81,18 @@ const TransferScreen = ({ route, navigation }) => {
       mode: "Transfer",
       amount: numericAmount,
       description:
-        type === "mantis"
-          ? "Mantis-to-Mantis Transfer"
-          : `Transfer to ${bank}`,
+        type === "mantis" ? "Mantis-to-Mantis Transfer" : `Transfer to ${bank}`,
       recipient: recipient || accountNumber,
       status: "Successful",
     });
 
     // Add notification
-  addNotification({
-    title: "Transfer Successful",
-    message: `₦${numericAmount} sent to ${recipient}.`,
-    type: "success",
-  });
+    addNotification({
+      title: "Transfer Successful",
+      message: `₦${numericAmount} sent to ${recipient}.`,
+      type: "success",
+      read: false,
+    });
 
     // Show success modal
     setShowSuccessModal(true);
