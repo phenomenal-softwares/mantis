@@ -35,7 +35,7 @@ const QRCodeScreen = () => {
       const randomRecipient =
         recipients[Math.floor(Math.random() * recipients.length)];
       const amount =
-        Math.floor((Math.random() * (50000 - 1000 + 1) + 1000) / 10) * 10; // ₦1k–₦50k, rounded to 10
+        Math.floor((Math.random() * (50000 - 1000 + 1) + 1000) / 100) * 100; // ₦1k–₦50k, rounded to 10
       const newRecipient = { ...randomRecipient, amount };
 
       setRecipient(newRecipient);

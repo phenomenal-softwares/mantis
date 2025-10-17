@@ -30,6 +30,7 @@ const TransactionHistoryScreen = () => {
         <View style={styles.transactionInfo}>
           <Text style={styles.transactionType}>{item.type}</Text>
           <Text style={styles.transactionMode}>{item.mode}</Text>
+          <Text style={styles.transactionDesc}>{item.description}</Text>
           <Text style={styles.recipient}>{item.recipient}</Text>
           <Text style={styles.date}>
             {new Date(item.date).toLocaleString()}
@@ -139,9 +140,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: colors.primary600,
   },
+  transactionDesc: {
+    fontSize: 13,
+    color: "#555",
+  },
   recipient: {
     fontSize: 13,
-    color: "#444",
+    color: colors.secondary,
   },
   date: {
     fontSize: 12,

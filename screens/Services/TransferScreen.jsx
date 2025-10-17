@@ -268,7 +268,8 @@ const TransferScreen = ({ route, navigation }) => {
       {/* Success Modal */}
       <TransactionSuccessModal
         visible={showSuccessModal}
-        amount={amount}
+        amount={"₦" + amount}
+        provider="Bank"
         bank={type === "mantis" ? "MANTIS" : bank}
         accountNumber={accountNumber}
         recipient={recipient}

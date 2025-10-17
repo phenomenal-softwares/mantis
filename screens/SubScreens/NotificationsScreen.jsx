@@ -36,7 +36,7 @@ const NotificationsScreen = () => {
       <TouchableOpacity
         style={[
           styles.card,
-          { backgroundColor: item.read ? "#f4f4f4" : "#fff" },
+          { backgroundColor: item.read ? "#fff" : "#F4F4F4" },
         ]}
         onPress={() => markAsRead(item.id)}
         activeOpacity={0.8}

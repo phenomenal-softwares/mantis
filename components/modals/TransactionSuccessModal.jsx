@@ -9,6 +9,7 @@ export default function TransactionSuccessModal({
   visible,
   onClose,
   amount,
+  provider,
   bank,
   accountNumber,
   recipient,
@@ -51,13 +52,13 @@ export default function TransactionSuccessModal({
 
           {/* Transaction Details */}
           <View style={styles.detailsBox}>
-            <Text style={styles.amountText}>₦{amount}</Text>
+            <Text style={styles.amountText}>{amount}</Text>
             {recipient ? (
               <Text style={styles.recipientText}>To: {recipient}</Text>
             ) : null}
             {bank ? (
               <Text style={styles.bankText}>
-                Bank: {bank} | {accountNumber}
+                {provider}: {bank} | {accountNumber}
               </Text>
             ) : null}
           </View>

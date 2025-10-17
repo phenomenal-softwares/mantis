@@ -17,15 +17,14 @@ import { NotificationContext } from "../../contexts/NotificationContext";
 import TransactionSuccessModal from "../../components/modals/TransactionSuccessModal";
 import { showToast } from "../../hooks/useToast";
 
-const AirtimeScreen = () => {
+const DataScreen = () => {
   const navigation = useNavigation();
   const { balance, setBalance } = useContext(BalanceContext);
   const { addTransaction } = useContext(TransactionHistoryContext);
   const { addNotification } = useContext(NotificationContext);
 
   const [selectedNetwork, setSelectedNetwork] = useState(null);
-  const [selectedAmount, setSelectedAmount] = useState(null);
-  const [customAmount, setCustomAmount] = useState("");
+  const [selectedPlan, setSelectedPlan] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -44,27 +43,27 @@ const AirtimeScreen = () => {
     },
   ];
 
-  const presetAmounts = [100, 200, 500, 1000, 2000, 3500, 5000];
+  const dataPlans = [
+    { id: 1, validity: "1 day", size: "150MB", price: 100 },
+    { id: 2, validity: "3 days", size: "1GB", price: 450 },
+    { id: 3, validity: "7 days", size: "1.5GB", price: 1000 },
+    { id: 4, validity: "14 days", size: "3GB", price: 1500 },
+    { id: 5, validity: "30 days", size: "6GB", price: 2500 },
+    { id: 6, validity: "30 days", size: "10GB", price: 3500 },
+    { id: 7, validity: "60 days", size: "20GB", price: 6000 },
+  ];
+
   const isFormComplete =
-    selectedNetwork && customAmount && phoneNumber.length === 11;
+    selectedNetwork && selectedPlan && phoneNumber.length === 11;
   const topUpId = `TOPUP-${Math.random()
     .toString(36)
     .substring(4, 10)
     .toUpperCase()}`;
-
-  const handleAmountSelect = (amount) => {
-    setSelectedAmount(amount);
-    setCustomAmount(amount.toString());
-  };
-
-  const handleCustomInput = (val) => {
-    setCustomAmount(val);
-    setSelectedAmount(null);
-  };
+  const amount = selectedPlan ? selectedPlan.price : 0;
+  const size = selectedPlan ? selectedPlan.size : "";
 
   const handleProceed = () => {
-    const amount = Number(customAmount);
-    if (!selectedNetwork || !amount || !phoneNumber) {
+    if (!selectedNetwork || !selectedPlan || !phoneNumber) {
       showToast(
         "error",
         "Incomplete form",
@@ -88,17 +87,17 @@ const AirtimeScreen = () => {
     // Add transaction
     addTransaction({
       type: "Debit",
-      mode: "Airtime Purchase",
-      amount,
-      description: `Airtime top-up (${selectedNetwork.name})`,
+      mode: "Data Purchase",
+      amount: amount,
+      description: `${size} Data Top-up (${selectedNetwork.name})`,
       recipient: phoneNumber,
       status: "Successful",
     });
 
     // Add notification
     addNotification({
-      title: "Airtime Purchased",
-      message: `₦${amount.toLocaleString()} airtime sent to ${phoneNumber} (${
+      title: "Data Purchased",
+      message: `${size} Data Top-up for ${phoneNumber} (${
         selectedNetwork.name
       })`,
       type: "success",
@@ -115,7 +114,7 @@ const AirtimeScreen = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialIcons name="arrow-back" size={26} color="#028174" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Buy Airtime</Text>
+        <Text style={styles.headerTitle}>Buy Data</Text>
         <View style={{ width: 26 }} />
       </View>
 
@@ -150,30 +149,26 @@ const AirtimeScreen = () => {
         ))}
       </View>
 
-      {/* Amount Selection */}
-      <Text style={styles.sectionTitle}>Select or Enter Amount</Text>
+      <Text style={styles.sectionTitle}>Select Data Plan</Text>
       <View style={styles.amountRow}>
-        {presetAmounts.map((amt) => (
+        {dataPlans.map((plan) => (
           <TouchableOpacity
-            key={amt}
+            key={plan.id}
             style={[
               styles.amountBtn,
-              selectedAmount === amt && styles.amountSelected,
+              selectedPlan?.id === plan.id && styles.amountSelected,
             ]}
-            onPress={() => handleAmountSelect(amt)}
+            onPress={() => setSelectedPlan(plan)}
           >
-            <Text style={styles.amountText}>₦{amt}</Text>
+            <Text style={styles.amountText}>
+              {plan.size} • {plan.validity}
+            </Text>
+            <Text style={styles.amountPrice}>
+              ₦{plan.price.toLocaleString()}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
-
-      <TextInput
-        placeholder="Enter custom amount"
-        value={customAmount}
-        onChangeText={handleCustomInput}
-        keyboardType="numeric"
-        style={styles.input}
-      />
 
       {/* Proceed Button */}
       <TouchableOpacity
@@ -190,13 +185,13 @@ const AirtimeScreen = () => {
       {/* Success Modal */}
       <TransactionSuccessModal
         visible={showSuccessModal}
-        amount={"₦" + Number(customAmount)}
+        amount={size}
         recipient={phoneNumber}
         provider="Network"
         bank={selectedNetwork?.name}
         accountNumber={topUpId}
-        type="Airtime Purchase"
-        narration="Airtime Top-up"
+        type="Data Purchase"
+        narration="Mobile Data Top-up"
       />
     </ScrollView>
   );
@@ -258,6 +253,7 @@ const styles = StyleSheet.create({
   amountBtn: {
     borderWidth: 1,
     borderColor: "#ccc",
+    width: "48%",
     height: 60,
     alignItems: "center",
     justifyContent: "center",
@@ -296,4 +292,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AirtimeScreen;
+export default DataScreen;

@@ -10,14 +10,19 @@ import LoansScreen from "./LoansScreen";
 import CardsScreen from "./CardsScreen";
 import OtherScreen from "./OtherScreen";
 
+// services screens
+import TransferScreen from "../Services/TransferScreen";
+import QRCodeScreen from "../Services/QRCodeScreen";
+import AirtimeScreen from "../Services/AirtimeScreen";
+import DataScreen from "../Services/DataScreen";
+import BettingScreen from "../Services/BettingScreen";
+
 // sub screens
 import ProfileScreen from "../SubScreens/ProfileScreen";
 import SupportScreen from "../SubScreens/SupportScreen";
 import NotificationsScreen from "../SubScreens/NotificationsScreen";
-import TransferScreen from "../Services/TransferScreen";
 import ComingSoonScreen from "../SubScreens/ComingSoonScreen";
 import TransactionHistoryScreen from "../SubScreens/TransactionHistoryScreen";
-import QRCodeScreen from "../Services/QRCodeScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -84,14 +89,19 @@ export default function DashboardNavigator() {
       {/* Bottom tabs (main dashboard) */}
       <Stack.Screen name="DashboardTabs" component={DashboardTabs} />
 
+      {/* Services */}
+      <Stack.Screen name="Transfer" component={TransferScreen} />
+      <Stack.Screen name="QRCode" component={QRCodeScreen} />
+      <Stack.Screen name="Airtime" component={AirtimeScreen} />
+      <Stack.Screen name="Data" component={DataScreen} />
+      <Stack.Screen name="Betting" component={BettingScreen} />
+
       {/* Sub screens */}
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Support" component={SupportScreen} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
-      <Stack.Screen name="Transfer" component={TransferScreen} />
       <Stack.Screen name="ComingSoon" component={ComingSoonScreen} />
       <Stack.Screen name="TransactionHistory" component={TransactionHistoryScreen} />
-      <Stack.Screen name="QRCode" component={QRCodeScreen} />
     </Stack.Navigator>
   );
 }

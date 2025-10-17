@@ -17,36 +17,49 @@ import { NotificationContext } from "../../contexts/NotificationContext";
 import TransactionSuccessModal from "../../components/modals/TransactionSuccessModal";
 import { showToast } from "../../hooks/useToast";
 
-const AirtimeScreen = () => {
+const BettingScreen = () => {
   const navigation = useNavigation();
   const { balance, setBalance } = useContext(BalanceContext);
   const { addTransaction } = useContext(TransactionHistoryContext);
   const { addNotification } = useContext(NotificationContext);
 
-  const [selectedNetwork, setSelectedNetwork] = useState(null);
+  const [selectedBettingPlatform, setSelectedBettingPlatform] = useState(null);
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [customAmount, setCustomAmount] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [userID, setuserID] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  const networks = [
-    { id: "mtn", name: "MTN", img: require("../../assets/networks/mtn.webp") },
+  const bettingPlatforms = [
     {
-      id: "airtel",
-      name: "Airtel",
-      img: require("../../assets/networks/airtel.webp"),
+      id: "sportybet",
+      name: "SportyBet",
+      img: require("../../assets/betting/sportybet.webp"),
     },
-    { id: "glo", name: "Glo", img: require("../../assets/networks/glo.webp") },
     {
-      id: "9mobile",
-      name: "9mobile",
-      img: require("../../assets/networks/9mobile.webp"),
+      id: "bet9ja",
+      name: "Bet9ja",
+      img: require("../../assets/betting/bet9ja.webp"),
+    },
+    {
+      id: "1xbet",
+      name: "1XBet",
+      img: require("../../assets/betting/1xbet.webp"),
+    },
+    {
+      id: "msport",
+      name: "M-Sport",
+      img: require("../../assets/betting/msport.webp"),
+    },
+    {
+      id: "betking",
+      name: "BetKing",
+      img: require("../../assets/betting/betking.webp"),
     },
   ];
 
   const presetAmounts = [100, 200, 500, 1000, 2000, 3500, 5000];
   const isFormComplete =
-    selectedNetwork && customAmount && phoneNumber.length === 11;
+    selectedBettingPlatform && customAmount && userID.length === 10;
   const topUpId = `TOPUP-${Math.random()
     .toString(36)
     .substring(4, 10)
@@ -64,7 +77,7 @@ const AirtimeScreen = () => {
 
   const handleProceed = () => {
     const amount = Number(customAmount);
-    if (!selectedNetwork || !amount || !phoneNumber) {
+    if (!selectedBettingPlatform || !amount || !userID) {
       showToast(
         "error",
         "Incomplete form",
@@ -88,18 +101,18 @@ const AirtimeScreen = () => {
     // Add transaction
     addTransaction({
       type: "Debit",
-      mode: "Airtime Purchase",
+      mode: "Betting Purchase",
       amount,
-      description: `Airtime top-up (${selectedNetwork.name})`,
-      recipient: phoneNumber,
+      description: `Betting top-up (${selectedBettingPlatform.name})`,
+      recipient: userID,
       status: "Successful",
     });
 
     // Add notification
     addNotification({
-      title: "Airtime Purchased",
-      message: `₦${amount.toLocaleString()} airtime sent to ${phoneNumber} (${
-        selectedNetwork.name
+      title: "Betting Purchase",
+      message: `₦${amount.toLocaleString()} betting top-up paid to ${userID} (${
+        selectedBettingPlatform.name
       })`,
       type: "success",
       read: false,
@@ -115,43 +128,44 @@ const AirtimeScreen = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialIcons name="arrow-back" size={26} color="#028174" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Buy Airtime</Text>
+        <Text style={styles.headerTitle}>Betting</Text>
         <View style={{ width: 26 }} />
       </View>
 
-      {/* Phone Number */}
-      <TextInput
-        placeholder="Enter phone number"
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        keyboardType="numeric"
-        maxLength={11}
-        style={styles.input}
-      />
-
-      {/* Select Network */}
-      <Text style={styles.sectionTitle}>Select Network</Text>
-      <View style={styles.networkRow}>
-        {networks.map((net) => (
+      {/* Select BettingPlatform */}
+      <Text style={styles.sectionTitle}>Select Betting Platform</Text>
+      <View style={styles.bettingPlatformRow}>
+        {bettingPlatforms.map((net) => (
           <TouchableOpacity
             key={net.id}
             style={[
-              styles.networkItem,
-              selectedNetwork?.id === net.id && styles.networkSelected,
+              styles.bettingPlatformItem,
+              selectedBettingPlatform?.id === net.id &&
+                styles.bettingPlatformSelected,
             ]}
-            onPress={() => setSelectedNetwork(net)}
+            onPress={() => setSelectedBettingPlatform(net)}
           >
             <Image
               source={net.img}
-              style={styles.networkLogo}
+              style={styles.bettingPlatformLogo}
               resizeMode="contain"
             />
           </TouchableOpacity>
         ))}
       </View>
 
+      {/* Phone Number */}
+      <TextInput
+        placeholder="Enter User ID"
+        value={userID}
+        onChangeText={setuserID}
+        keyboardType="numeric"
+        maxLength={11}
+        style={styles.input}
+      />
+
       {/* Amount Selection */}
-      <Text style={styles.sectionTitle}>Select or Enter Amount</Text>
+      <Text style={styles.sectionTitle}>Select Amount</Text>
       <View style={styles.amountRow}>
         {presetAmounts.map((amt) => (
           <TouchableOpacity
@@ -191,12 +205,12 @@ const AirtimeScreen = () => {
       <TransactionSuccessModal
         visible={showSuccessModal}
         amount={"₦" + Number(customAmount)}
-        recipient={phoneNumber}
-        provider="Network"
-        bank={selectedNetwork?.name}
+        recipient={userID}
+        provider="Betting Platform"
+        bank={selectedBettingPlatform?.name}
         accountNumber={topUpId}
-        type="Airtime Purchase"
-        narration="Airtime Top-up"
+        type="Betting Top-up"
+        narration="Betting Purchase"
       />
     </ScrollView>
   );
@@ -225,12 +239,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginVertical: 10,
   },
-  networkRow: {
+  bettingPlatformRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 20,
   },
-  networkItem: {
+  bettingPlatformItem: {
     width: 70,
     height: 70,
     borderRadius: 12,
@@ -239,11 +253,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  networkSelected: {
+  bettingPlatformSelected: {
     borderColor: "#028174",
     backgroundColor: "#e0f8f4",
   },
-  networkLogo: {
+  bettingPlatformLogo: {
     width: 50,
     height: 50,
   },
@@ -296,4 +310,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AirtimeScreen;
+export default BettingScreen;
