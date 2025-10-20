@@ -16,6 +16,7 @@ import QRCodeScreen from "../Services/QRCodeScreen";
 import AirtimeScreen from "../Services/AirtimeScreen";
 import DataScreen from "../Services/DataScreen";
 import BettingScreen from "../Services/BettingScreen";
+import ElectricityScreen from "../Services/ElectricityScreen";
 
 // sub screens
 import ProfileScreen from "../SubScreens/ProfileScreen";
@@ -72,8 +73,8 @@ function DashboardTabs() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Payments" component={PaymentsScreen} />
-      <Tab.Screen name="Loans" component={LoansScreen} />
       <Tab.Screen name="Cards" component={CardsScreen} />
+      <Tab.Screen name="Loans" component={LoansScreen} />
       <Tab.Screen name="Other" component={OtherScreen} />
     </Tab.Navigator>
   );
@@ -95,13 +96,17 @@ export default function DashboardNavigator() {
       <Stack.Screen name="Airtime" component={AirtimeScreen} />
       <Stack.Screen name="Data" component={DataScreen} />
       <Stack.Screen name="Betting" component={BettingScreen} />
+      <Stack.Screen name="Electricity" component={ElectricityScreen} />
 
       {/* Sub screens */}
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Support" component={SupportScreen} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
       <Stack.Screen name="ComingSoon" component={ComingSoonScreen} />
-      <Stack.Screen name="TransactionHistory" component={TransactionHistoryScreen} />
+      <Stack.Screen
+        name="TransactionHistory"
+        component={TransactionHistoryScreen}
+      />
     </Stack.Navigator>
   );
 }

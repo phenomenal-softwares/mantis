@@ -33,7 +33,7 @@ export const services = {
     { id: "8", name: "Airtime", icon: "phone-call", screen: "Airtime" },
     { id: "9", name: "Data", icon: "wifi", screen: "Data" },
     { id: "10", name: "Betting", icon: "target", screen: "Betting" },
-    { id: "11", name: "Electricity", icon: "zap", screen: "ElectricityScreen" },
+    { id: "11", name: "Electricity", icon: "zap", screen: "Electricity" },
     { id: "12", name: "Cable TV", icon: "tv", screen: "CableTVScreen" },
     { id: "13", name: "JAMB", icon: "file-text", screen: "ComingSoon" },
     { id: "14", name: "WAEC", icon: "edit", screen: "ComingSoon" },
