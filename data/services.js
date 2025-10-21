@@ -34,7 +34,7 @@ export const services = {
     { id: "9", name: "Data", icon: "wifi", screen: "Data" },
     { id: "10", name: "Betting", icon: "target", screen: "Betting" },
     { id: "11", name: "Electricity", icon: "zap", screen: "Electricity" },
-    { id: "12", name: "Cable TV", icon: "tv", screen: "CableTVScreen" },
+    { id: "12", name: "Cable TV", icon: "tv", screen: "CableTV" },
     { id: "13", name: "JAMB", icon: "file-text", screen: "ComingSoon" },
     { id: "14", name: "WAEC", icon: "edit", screen: "ComingSoon" },
     { id: "15", name: "NECO", icon: "book", screen: "ComingSoon" },

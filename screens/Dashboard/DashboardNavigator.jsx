@@ -17,6 +17,7 @@ import AirtimeScreen from "../Services/AirtimeScreen";
 import DataScreen from "../Services/DataScreen";
 import BettingScreen from "../Services/BettingScreen";
 import ElectricityScreen from "../Services/ElectricityScreen";
+import CableTvScreen from "../Services/CableTvScreen";
 
 // sub screens
 import ProfileScreen from "../SubScreens/ProfileScreen";
@@ -97,6 +98,7 @@ export default function DashboardNavigator() {
       <Stack.Screen name="Data" component={DataScreen} />
       <Stack.Screen name="Betting" component={BettingScreen} />
       <Stack.Screen name="Electricity" component={ElectricityScreen} />
+      <Stack.Screen name="CableTV" component={CableTvScreen} />
 
       {/* Sub screens */}
       <Stack.Screen name="Profile" component={ProfileScreen} />

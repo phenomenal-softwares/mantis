@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     gap: 10,
     marginBottom: 20,
   },
