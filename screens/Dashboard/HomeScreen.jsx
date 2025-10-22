@@ -49,11 +49,6 @@ const HomeScreen = () => {
             data={services.Rewards}
             onPress={handleServicePress}
           />
-          <ServicesSection
-            title="Other Services"
-            data={services.Other}
-            onPress={handleServicePress}
-          />
         </View>
         <Image
           style={styles.promoImage}

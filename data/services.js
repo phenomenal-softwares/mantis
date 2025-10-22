@@ -19,14 +19,14 @@ export const services = {
   ],
 
   Wealth: [
-    { id: "5", name: "Savings", icon: "dollar-sign", screen: "SavingsScreen" },
+    { id: "5", name: "Savings", icon: "dollar-sign", screen: "ComingSoon" },
     {
       id: "6",
       name: "Investments",
       icon: "trending-up",
-      screen: "InvestmentsScreen",
+      screen: "ComingSoon",
     },
-    { id: "7", name: "Loans", icon: "credit-card", screen: "LoansScreen" },
+    { id: "7", name: "Loans", icon: "credit-card", screen: "Loans" },
   ],
 
   BillPayments: [
@@ -65,25 +65,13 @@ export const services = {
   ],
 
   Rewards: [
-    { id: "18", name: "Cashback", icon: "gift", screen: "CashbackScreen" },
-    { id: "19", name: "Referrals", icon: "users", screen: "ReferralsScreen" },
+    { id: "18", name: "Cashback", icon: "gift", screen: "ComingSoon" },
+    { id: "19", name: "Referrals", icon: "users", screen: "ComingSoon" },
     {
       id: "20",
       name: "Promo Offers",
       icon: "star",
-      screen: "PromoOffersScreen",
+      screen: "ComingSoon",
     },
-  ],
-
-  Other: [
-    {
-      id: "21",
-      name: "ATM Card",
-      icon: "credit-card",
-      screen: "ATMCardScreen",
-    },
-    { id: "22", name: "Support", icon: "headphones", screen: "SupportScreen" },
-    { id: "23", name: "Profile", icon: "user", screen: "ProfileScreen" },
-    { id: "24", name: "Settings", icon: "settings", screen: "SettingsScreen" },
   ],
 };
