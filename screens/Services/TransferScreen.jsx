@@ -42,7 +42,7 @@ const recipients = [
 ];
 
 const TransferScreen = ({ route, navigation }) => {
-  const { type } = route.params || { type: "mantis" }; // 'mantis' | 'bank'
+  const { type } = route.params || { type: "bank" }; // 'mantis' | 'bank'
   const { balance, setBalance } = useContext(BalanceContext);
   const { addTransaction } = useContext(TransactionHistoryContext);
   const { addNotification } = useContext(NotificationContext);
@@ -59,7 +59,7 @@ const TransferScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     let timer;
-
+    
     if (accountNumber.length === 0) {
       setValidationMsg("");
       setRecipient("");
@@ -142,7 +142,7 @@ const TransferScreen = ({ route, navigation }) => {
 
       {/* Form */}
       <View style={styles.form}>
-        {type === "bank" && (
+        {type !== "mantis" && (
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Select Bank</Text>
 

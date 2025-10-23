@@ -241,7 +241,10 @@ const styles = StyleSheet.create({
   },
   bettingPlatformRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 15,
     marginBottom: 20,
   },
   bettingPlatformItem: {

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Modal, View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import colors from "../../styles/colors";
-
 import { useNavigation } from "@react-navigation/native";
+import colors from "../../styles/colors";
+import DisclaimerBanner from "../UI/DisclaimerBanner";
 
 export default function TransactionSuccessModal({
   visible,
@@ -18,89 +18,97 @@ export default function TransactionSuccessModal({
 }) {
   const navigation = useNavigation();
   const [transactionId, setTransactionId] = useState("");
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-  const rand = Math.floor(1000 + Math.random() * 9000); // 4 random digits
-  const id = `TRX${Date.now()}${rand}`; // e.g., TRX17282345671234
-  setTransactionId(id);
-}, []);
+    if (visible) {
+      setShowContent(false);
+      const rand = Math.floor(1000 + Math.random() * 9000);
+      const id = `TRX${Date.now()}${rand}`;
+      setTransactionId(id);
 
+      // Delay before showing modal content
+      const timer = setTimeout(() => setShowContent(true), 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [visible]);
 
   return (
     <Modal
       visible={visible}
-      animationType="slide"
+      animationType="fade"
       transparent
       onRequestClose={onClose}
     >
       <View style={styles.overlay}>
-        <View style={styles.modalContent}>
-          {/* Success Icon / Banner */}
-          <View style={styles.iconWrapper}>
-            <View style={styles.iconCircle}>
-              <Text style={styles.iconText}>
-                <Ionicons name="checkmark" size={50} color={colors.light} />
+        {!showContent ? (
+          // LOADING SPINNER
+          <View style={styles.spinnerContainer}>
+            <ActivityIndicator size="large" color={colors.primary} />
+            <Text style={styles.loadingText}>Processing...</Text>
+          </View>
+        ) : (
+          <>
+            <View style={styles.modalContent}>
+              {/* Success Icon */}
+              <View style={styles.iconWrapper}>
+                <View style={styles.iconCircle}>
+                  <Ionicons name="checkmark" size={50} color="#fff" />
+                </View>
+              </View>
+
+              <Text style={styles.title}>Transaction Successful</Text>
+              <Text style={styles.subtitle}>
+                Your {type} has been completed successfully.
               </Text>
+
+              <View style={styles.detailsBox}>
+                <Text style={styles.amountText}>{amount}</Text>
+                {recipient ? (
+                  <Text style={styles.recipientText}>To: {recipient}</Text>
+                ) : null}
+                {bank ? (
+                  <Text style={styles.bankText}>
+                    {provider}: {bank} | {accountNumber}
+                  </Text>
+                ) : null}
+              </View>
+
+              <View style={styles.divider} />
+
+              <Text style={styles.footerText}>
+                Narration: {narration || "Nil"} {"\n"}
+                Reference ID: {transactionId}{"\n"}
+                Date: {new Date().toLocaleString()}
+              </Text>
+
+              <View style={styles.buttonRow}>
+                <TouchableOpacity
+                  style={[styles.actionBtn, styles.shareBtn]}
+                  onPress={() => {
+                    if (typeof window !== "undefined" && window.print) {
+                      window.print();
+                    } else {
+                      alert("Sharing supported only on web demo.");
+                    }
+                  }}
+                >
+                  <Text style={styles.shareText}>Share Receipt</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.actionBtn, styles.doneBtn]}
+                  onPress={() => navigation.replace("Dashboard")}
+                >
+                  <Text style={styles.doneText}>Done</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
 
-          {/* Title & Subtext */}
-          <Text style={styles.title}>Transaction Successful</Text>
-          <Text style={styles.subtitle}>
-            Your {type} has been completed successfully.
-          </Text>
-
-          {/* Transaction Details */}
-          <View style={styles.detailsBox}>
-            <Text style={styles.amountText}>{amount}</Text>
-            {recipient ? (
-              <Text style={styles.recipientText}>To: {recipient}</Text>
-            ) : null}
-            {bank ? (
-              <Text style={styles.bankText}>
-                {provider}: {bank} | {accountNumber}
-              </Text>
-            ) : null}
-          </View>
-
-          {/* Decorative Divider */}
-          <View style={styles.divider} />
-
-          {/* Footer */}
-          <Text style={styles.footerText}>
-            Narration: {narration || "Nil"} {"\n"}
-            Reference ID: {transactionId}{"\n"}
-            Date: {new Date().toLocaleString()}
-          </Text>
-
-          {/* Buttons Row */}
-          <View style={styles.buttonRow}>
-            {/* Share Receipt */}
-            <TouchableOpacity
-              style={[styles.actionBtn, styles.shareBtn]}
-              onPress={() => {
-                if (typeof window !== "undefined" && window.print) {
-                  window.print(); // Opens browser print/share dialogue
-                } else {
-                  Alert.alert(
-                    "Share Unavailable",
-                    "Sharing is currently supported only on web demo."
-                  );
-                }
-              }}
-            >
-              <Text style={styles.shareText}>Share Receipt</Text>
-            </TouchableOpacity>
-
-            {/* Done Button */}
-            <TouchableOpacity
-              style={[styles.actionBtn, styles.doneBtn]}
-              onPress={() => navigation.replace("Dashboard")}
-            >
-              <Text style={styles.doneText}>Done</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+            <DisclaimerBanner />
+          </>
+        )}
       </View>
     </Modal>
   );
@@ -113,6 +121,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 25,
+  },
+  loadingOverlay: {
+    backgroundColor: "rgba(255,255,255,0.95)",
+    borderRadius: 15,
+    paddingVertical: 40,
+    paddingHorizontal: 30,
+    alignItems: "center",
+  },
+  loadingText: {
+    marginTop: 15,
+    fontSize: 15,
+    color: colors.light,
+    fontWeight: "500",
   },
   modalContent: {
     backgroundColor: "#fff",

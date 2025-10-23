@@ -2,7 +2,8 @@ import { View, Image, ScrollView, StyleSheet } from "react-native";
 import HomeHeader from "../../components/HomeScreen/HomeHeader";
 import AccountInfo from "../../components/HomeScreen/AccountInfo";
 import ServicesSection from "../../components/HomeScreen/ServicesSection";
-import PromoCarousel from "../../components/HomeScreen/PromoCarousel";
+import PromoCarousel from "../../components/UI/PromoCarousel";
+import DisclaimerBanner from "../../components/UI/DisclaimerBanner";
 
 import { services } from "../../data/services";
 
@@ -32,18 +33,18 @@ const HomeScreen = () => {
             data={services.Transfer}
             onPress={handleServicePress}
           />
-          <PromoCarousel />
+          <DisclaimerBanner />
           <ServicesSection
             title="Bill Payments"
             data={services.BillPayments}
             onPress={handleServicePress}
           />
+          <PromoCarousel />
           <ServicesSection
             title="Wealth"
             data={services.Wealth}
             onPress={handleServicePress}
           />
-          <PromoCarousel />
           <ServicesSection
             title="Rewards"
             data={services.Rewards}

@@ -8,7 +8,7 @@ import HomeScreen from "./HomeScreen";
 import PaymentsScreen from "./PaymentsScreen";
 import LoansScreen from "./LoansScreen";
 import CardsScreen from "./CardsScreen";
-import OtherScreen from "./OtherScreen";
+import OthersScreen from "./OthersScreen";
 
 // services screens
 import TransferScreen from "../Services/TransferScreen";
@@ -68,7 +68,7 @@ function DashboardTabs() {
             default:
               iconName = "ellipse-outline";
           }
-          return <Ionicons name={iconName} size={22} color={color} />;
+          return <Ionicons name={iconName} size={25} color={color} />;
         },
       })}
     >
@@ -76,7 +76,7 @@ function DashboardTabs() {
       <Tab.Screen name="Payments" component={PaymentsScreen} />
       <Tab.Screen name="Cards" component={CardsScreen} />
       <Tab.Screen name="Loans" component={LoansScreen} />
-      <Tab.Screen name="Other" component={OtherScreen} />
+      <Tab.Screen name="Other" component={OthersScreen} />
     </Tab.Navigator>
   );
 }

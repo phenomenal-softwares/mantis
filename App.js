@@ -25,6 +25,9 @@ import ProfileScreen from "./screens/SubScreens/ProfileScreen";
 import SupportScreen from "./screens/SubScreens/SupportScreen";
 import NotificationsScreen from "./screens/SubScreens/NotificationsScreen";
 
+// Responsive Wrapper for tablet-like views
+import ResponsiveWrapper from "./components/UI/ResponsiveWrapper";
+
 const Stack = createNativeStackNavigator();
 
 const toastConfig = {
@@ -67,22 +70,27 @@ export default function App() {
       <BalanceProvider>
         <TransactionHistoryProvider>
           <NotificationProvider>
+                          <ResponsiveWrapper>
             <NavigationContainer>
-              <Stack.Navigator
-                initialRouteName="Login"
-                screenOptions={{ headerShown: false }}
-              >
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="Dashboard" component={DashboardNavigator} />
-                <Stack.Screen name="Profile" component={ProfileScreen} />
-                <Stack.Screen name="Support" component={SupportScreen} />
-                <Stack.Screen
-                  name="Notifications"
-                  component={NotificationsScreen}
-                />
-              </Stack.Navigator>
-              <Toast config={toastConfig} />
+                <Stack.Navigator
+                  initialRouteName="Login"
+                  screenOptions={{ headerShown: false }}
+                >
+                  <Stack.Screen name="Login" component={LoginScreen} />
+                  <Stack.Screen
+                    name="Dashboard"
+                    component={DashboardNavigator}
+                  />
+                  <Stack.Screen name="Profile" component={ProfileScreen} />
+                  <Stack.Screen name="Support" component={SupportScreen} />
+                  <Stack.Screen
+                    name="Notifications"
+                    component={NotificationsScreen}
+                  />
+                </Stack.Navigator>
+                <Toast config={toastConfig} />
             </NavigationContainer>
+                          </ResponsiveWrapper>
           </NotificationProvider>
         </TransactionHistoryProvider>
       </BalanceProvider>
