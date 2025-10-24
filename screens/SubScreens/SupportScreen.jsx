@@ -1,7 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import colors from "../../styles/colors";
+import PromoCarousel from "../../components/UI/PromoCarousel";
 
 const SupportScreen = () => {
   const navigation = useNavigation();
@@ -17,7 +24,7 @@ const SupportScreen = () => {
           <Ionicons
             name="arrow-back"
             size={26}
-            color={colors?.text || "#333"}
+            color={colors.primary}
           />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Support</Text>
@@ -32,12 +39,26 @@ const SupportScreen = () => {
         </Text>
 
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.button}>
+          {/* WhatsApp Chat */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              Linking.openURL(
+                "https://wa.me/2348086792440?text=Hello%20Phenomenal%20Productions!%20I%27d%20like%20to%20chat."
+              )
+            }
+          >
             <Feather name="message-circle" size={20} color="#fff" />
             <Text style={styles.btnText}>Chat With Us</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.button, styles.secondary]}>
+          {/* Email Link */}
+          <TouchableOpacity
+            style={[styles.button, styles.secondary]}
+            onPress={() =>
+              Linking.openURL("mailto:info@phenomenalproductions.com.ng")
+            }
+          >
             <Feather name="mail" size={20} color="#028174" />
             <Text style={[styles.btnText, styles.secondaryText]}>
               Send an Email
@@ -45,6 +66,8 @@ const SupportScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+
+      <PromoCarousel />
     </View>
   );
 };

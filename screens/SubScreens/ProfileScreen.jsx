@@ -4,6 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import { user } from "../../data/user";
 import colors from "../../styles/colors";
 
+import PromoCarousel from "../../components/UI/PromoCarousel";
+
 const ProfileScreen = () => {
   const navigation = useNavigation();
 
@@ -15,7 +17,7 @@ const ProfileScreen = () => {
           style={styles.backBtn}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={26} color={colors?.text || "#333"} />
+          <Ionicons name="arrow-back" size={26} color={colors.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>My Profile</Text>
         <View style={{ width: 26 }} /> {/* Spacer for symmetry */}
@@ -42,6 +44,9 @@ const ProfileScreen = () => {
           <Text style={styles.value}>{user.account.bankName}</Text>
         </View>
       </View>
+
+      {/* Promo Carousel */}
+      <PromoCarousel />
     </View>
   );
 };
@@ -71,7 +76,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: colors?.primary || "#028174",
+    color: colors.primary,
   },
 
   /* BODY */

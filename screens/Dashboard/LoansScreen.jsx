@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import colors from "../../styles/colors";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { showToast } from "../../hooks/useToast";
+import DisclaimerBanner from "../../components/UI/DisclaimerBanner";
 
 const LoanScreen = () => {
   const { balance, setBalance, hasLoan, setHasLoan } =
@@ -101,6 +102,8 @@ const LoanScreen = () => {
             : "Borrow ₦50,000"}
         </Text>
       </TouchableOpacity>
+
+      <DisclaimerBanner />
     </View>
   );
 };

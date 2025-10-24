@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -19,6 +19,12 @@ export default function LoginScreen() {
   const [pin, setPin] = useState("");
   const inputRef = useRef(null);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if (pin.length === 6) {
+      setTimeout(() => navigation.replace("Dashboard"), 200);
+    }
+  }, [pin]);
 
   const handleChange = (text) => {
     const clean = text.replace(/[^0-9]/g, "").slice(0, 6);
@@ -88,16 +94,59 @@ export default function LoginScreen() {
               <TextInput
                 ref={inputRef}
                 style={{ height: 0, width: 0, opacity: 0 }}
-                keyboardType="numeric"
+                keyboardType="none" // prevents keyboard popup
                 value={pin}
                 onChangeText={handleChange}
-                maxLength={6}
+                editable={false} // fully controlled via pad
               />
 
               {/* Forgot Password */}
               <TouchableOpacity>
                 <Text style={styles.forgot}>Forgot password?</Text>
               </TouchableOpacity>
+            </View>
+
+            {/* Custom Number Pad */}
+            <View style={styles.numberPad}>
+              {[
+                ["1", "2", "3"],
+                ["4", "5", "6"],
+                ["7", "8", "9"],
+                ["←", "0", "✓"],
+              ].map((row, rIdx) => (
+                <View key={rIdx} style={styles.row}>
+                  {row.map((key) => (
+                    <TouchableOpacity
+                      key={key}
+                      style={[
+                        styles.key,
+                        key === "←" && {
+                          backgroundColor: "rgba(255,255,255,0.15)",
+                        },
+                        key === "✓" && { backgroundColor: colors.accent },
+                      ]}
+                      onPress={() => {
+                        if (key === "←") {
+                          setPin((prev) => prev.slice(0, -1));
+                        } else if (key === "✓") {
+                          if (pin.length === 6) navigation.replace("Dashboard");
+                        } else if (pin.length < 6) {
+                          setPin((prev) => prev + key);
+                        }
+                      }}
+                    >
+                      <Text
+                        style={[
+                          styles.keyText,
+                          key === "✓" && { color: "#fff", fontWeight: "700" },
+                        ]}
+                      >
+                        {key}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              ))}
             </View>
 
             {/* Biometric */}
@@ -123,11 +172,6 @@ export default function LoginScreen() {
                 </Text>
               </View>
             </TouchableOpacity>
-          </View>
-
-          {/* Tagline */}
-          <View style={{ width: "100%", alignItems: "center" }}>
-            <Text style={styles.tagline}>Mantis — Your Money, Simplified</Text>
           </View>
         </View>
       </LinearGradient>
@@ -222,12 +266,38 @@ const styles = StyleSheet.create({
     marginTop: 8,
     textDecorationLine: "underline",
   },
+  numberPad: {
+    marginTop: 24,
+    width: 220,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  key: {
+    width: 50,
+    height: 50,
+    borderRadius: 35,
+    backgroundColor: "rgba(255,255,255,0.08)",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  keyText: {
+    color: colors.light,
+    fontSize: 20,
+    fontWeight: "600",
+  },
   biometricBtn: {
     backgroundColor: colors.secondary,
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 12,
-    marginTop: 32,
+    marginVertical: 16,
     width: 280,
     alignItems: "center",
     elevation: 3,

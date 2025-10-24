@@ -13,6 +13,7 @@ import { BalanceContext } from "../../contexts/BalanceContext";
 import { TransactionHistoryContext } from "../../contexts/TransactionHistoryContext";
 import { NotificationContext } from "../../contexts/NotificationContext";
 import TransactionSuccessModal from "../../components/modals/TransactionSuccessModal";
+import PromoCarousel from "../../components/UI/PromoCarousel";
 import colors from "../../styles/colors";
 import { Feather, Ionicons } from "@expo/vector-icons";
 
@@ -263,6 +264,8 @@ const TransferScreen = ({ route, navigation }) => {
         >
           <Text style={styles.transferText}>Proceed</Text>
         </TouchableOpacity>
+
+        <PromoCarousel />
       </View>
 
       {/* Success Modal */}
