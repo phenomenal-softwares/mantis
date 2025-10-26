@@ -74,14 +74,16 @@ export default function CardsScreen() {
               <LinearGradient colors={item.color} style={styles.card}>
                 <View style={styles.cardTop}>
                   <Text style={styles.provider}>{account.bankName}</Text>
-                  <Image
+                </View>
+
+              <View style={styles.cardMiddle}>
+                <Text style={styles.number}>{item.number}</Text>
+                <Image
                     source={require("../../assets/images/chip.webp")}
                     style={styles.chip}
                   />
-                </View>
-
-                <Text style={styles.number}>{item.number}</Text>
-
+              </View>
+                
                 <View style={styles.cardBottom}>
                   <View>
                     <Text style={styles.label}>CARD HOLDER</Text>
@@ -165,15 +167,27 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 6,
   },
-  cardTop: { flexDirection: "row", justifyContent: "space-between" },
-  chip: { width: 40, height: 30, resizeMode: "contain" },
+  cardTop: { 
+    flexDirection: "row", 
+    justifyContent: "space-between" 
+  },
   provider: { color: "#fff", fontWeight: "700", fontSize: 16 },
+  cardMiddle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   number: {
     color: "#fff",
     fontSize: 22,
     letterSpacing: 2,
     marginTop: 20,
     marginBottom: 10,
+  },
+  chip: { 
+    width: 50, 
+    height: 40, 
+    resizeMode: "contain" 
   },
   cardBottom: { flexDirection: "row", justifyContent: "space-between" },
   label: { color: "#fff", fontSize: 10 },
