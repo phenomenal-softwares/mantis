@@ -50,21 +50,18 @@ Copy code
 
 ---
 
-## 🚀 Running Locally
-
-📩 Contact
+## 📩 Contact
 For inquiries, reach out via:
 
 ✉️ Email: info@phenomenalproductions.com.ng
 
 💬 Chat on WhatsApp: https://wa.me/2348086792440
 
-🧾 License
+## 🧾 License
 This project is licensed under the MIT License.
 See the LICENSE file for details.
 
-🪄 Author
-Abiodun Ojo,
-Phenomenal Productions
-Creative Software & Digital Experience Studio
-🌐 www.phenomenalproductions.com.ng
+## 🪄 Author
+- Abiodun Ojo,
+- Phenomenal Productions
+- 🌐 www.phenomenalproductions.com.ng
