@@ -43,6 +43,16 @@ const ProfileScreen = () => {
           <Text style={styles.label}>Bank</Text>
           <Text style={styles.value}>{user.account.bankName}</Text>
         </View>
+
+        <View style={styles.infoBox}>
+          <Text style={styles.label}>Account Number</Text>
+          <Text style={styles.value}>{user.account.accountNumber}</Text>
+        </View>
+
+        <View style={styles.infoBox}>
+          <Text style={styles.label}>KYC Tier</Text>
+          <Text style={styles.value}>{user.account.tier}</Text>
+        </View>
       </View>
 
       {/* Promo Carousel */}

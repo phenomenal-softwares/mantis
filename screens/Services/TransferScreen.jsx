@@ -134,11 +134,10 @@ const TransferScreen = ({ route, navigation }) => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color={colors.dark} />
+          <Ionicons name="arrow-back" size={26} color="#028174" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>
-          {type === "mantis" ? "Mantis Transfer" : "Other Bank Transfer"}
-        </Text>
+        <Text style={styles.headerTitle}>{type === "mantis" ? "Mantis Transfer" : "Other Bank Transfer"}</Text>
+        <View style={{ width: 26 }} />
       </View>
 
       {/* Form */}
@@ -288,21 +287,20 @@ export default TransferScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.light,
+    backgroundColor: "#f8f9fb",
+    paddingHorizontal: 16,
+    paddingTop: 10,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
-    paddingTop: Platform.OS === "ios" ? 60 : 15,
-    gap: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    justifyContent: "space-between",
+    marginBottom: 20,
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: colors.primary,
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#028174",
   },
   form: {
     padding: 16,
